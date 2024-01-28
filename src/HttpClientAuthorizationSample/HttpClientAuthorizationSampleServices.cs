@@ -3,39 +3,79 @@
 // See LICENSE in the project root for license information.
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace HttpClientAuthorizationSample;
 
 public static class HttpClientAuthorizationSampleServices
 {
-  public static IServiceCollection AddHttp(this IServiceCollection services, string tokenBaseUrl, string apiBaseUrl)
+  public static IHttpClientBuilder AddAuthorizedHttpClient(this IServiceCollection services)
   {
     ArgumentNullException.ThrowIfNull(services);
 
     services.AddHttpClient
     (
       name: "token",
-      configureClient: httpClient => httpClient.BaseAddress = new Uri(tokenBaseUrl)
+      configureClient: (IServiceProvider provider, HttpClient tokenHttpClient) =>
+      {
+        AuthorizedHttpClientSettings authorizedHttpClientSettings =
+          provider.GetRequiredService<IOptions<AuthorizedHttpClientSettings>>().Value ??
+          throw new Exception("No authorizated HTTP client settings retrieved");
+
+        tokenHttpClient.BaseAddress = new Uri(authorizedHttpClientSettings.TokenBaseUrl);
+      }
     );
 
-    services.AddHttpClient
+    IHttpClientBuilder apiClientBuilder = services.AddHttpClient
     (
       name: "api",
-      configureClient: httpClient =>
+      configureClient: (IServiceProvider provider, HttpClient tokenHttpClient) =>
       {
-        httpClient.BaseAddress = new Uri(apiBaseUrl);
-        httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-        httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
+        AuthorizedHttpClientSettings authorizedHttpClientSettings =
+          provider.GetRequiredService<IOptions<AuthorizedHttpClientSettings>>().Value ??
+          throw new Exception("No authorizated HTTP client settings retrieved");
+
+        tokenHttpClient.BaseAddress = new Uri(authorizedHttpClientSettings.ApiBaseUrl);
+        tokenHttpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+        tokenHttpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
       }
-    )
-    .AddHttpMessageHandler((IServiceProvider provider) =>
+    );
+
+    apiClientBuilder.AddHttpMessageHandler((IServiceProvider provider) =>
     {
+      AuthorizedHttpClientSettings authorizedHttpClientSettings =
+          provider.GetRequiredService<IOptions<AuthorizedHttpClientSettings>>().Value ??
+          throw new Exception("No authorizated HTTP client settings retrieved");
+
       HttpClient tokenHttpClient = provider.GetRequiredService<IHttpClientFactory>().CreateClient("token");
-      AuthorizedHttpMessageHandler authorizedHttpMessageHandler = new(tokenHttpClient);
+      AuthorizedHttpMessageHandler authorizedHttpMessageHandler = new
+      (
+        tokenHttpClient,
+        authorizedHttpClientSettings.GetTokenUrl,
+        authorizedHttpClientSettings.ClientId,
+        authorizedHttpClientSettings.ClientSecret
+      );
 
       return authorizedHttpMessageHandler;
     });
 
-    return services;
+    return apiClientBuilder;
+  }
+
+  public static IHttpClientBuilder WithSettings(this IHttpClientBuilder builder, string sectionName)
+  {
+    ArgumentNullException.ThrowIfNull(builder);
+    builder.Services.AddOptions<AuthorizedHttpClientSettings>(sectionName)
+                    .ValidateOnStart();
+
+    return builder;
+  }
+
+  public static IHttpClientBuilder WithSettings(this IHttpClientBuilder builder, Action<AuthorizedHttpClientSettings> configure)
+  {
+    ArgumentNullException.ThrowIfNull(builder);
+    builder.Services.Configure<AuthorizedHttpClientSettings>(configure);
+
+    return builder;
   }
 }

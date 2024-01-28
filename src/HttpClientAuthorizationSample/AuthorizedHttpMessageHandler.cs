@@ -7,11 +7,15 @@ using System.Net.Http.Json;
 
 namespace HttpClientAuthorizationSample;
 
-public sealed class AuthorizedHttpMessageHandler(HttpClient tokenHttpClient) : DelegatingHandler
+public sealed class AuthorizedHttpMessageHandler(HttpClient tokenHttpClient, string getTokenUrl, string clientId, string clientSecret) : DelegatingHandler
 {
   private const int CacheGapInMilliseconds = 500;
 
   private readonly HttpClient _tokenHttpClient = tokenHttpClient ?? throw new ArgumentNullException(nameof(tokenHttpClient));
+
+  private readonly string _getTokenUrl = getTokenUrl ?? throw new ArgumentNullException(nameof(getTokenUrl));
+  private readonly string _clientId = clientId ?? throw new ArgumentNullException(nameof(clientId));
+  private readonly string _clientSecret = clientSecret ?? throw new ArgumentNullException(nameof(clientSecret));
 
   private Token? _cachedToken;
   private DateTimeOffset _cacheExpiresAt;
@@ -32,7 +36,14 @@ public sealed class AuthorizedHttpMessageHandler(HttpClient tokenHttpClient) : D
   {
     if (_cachedToken is null || _cacheExpiresAt < DateTimeOffset.UtcNow.AddMilliseconds(CacheGapInMilliseconds))
     {
-      Token token = await _tokenHttpClient.GetFromJsonAsync<Token>("token", cancellationToken) ??
+      using FormUrlEncodedContent content = new(new Dictionary<string, string>
+      {
+        { "grant_type", "client_credentials" },
+        { "client_id", _clientId },
+        { "client_secret", _clientSecret },
+      });
+      using HttpResponseMessage message = await _tokenHttpClient.PostAsync(_getTokenUrl, content, cancellationToken);
+      Token token = await message.Content.ReadFromJsonAsync<Token>(cancellationToken) ??
                     throw new Exception("No token retrieved");
 
       _cachedToken = token;
