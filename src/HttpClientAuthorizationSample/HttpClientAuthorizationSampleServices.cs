@@ -8,7 +8,7 @@ namespace HttpClientAuthorizationSample;
 
 public static class HttpClientAuthorizationSampleServices
 {
-  public static IServiceCollection AddHttp(this IServiceCollection services, string tokenBaseUrl, string apiBaseUrl)
+  public static IServiceCollection AddHttp(this IServiceCollection services, string tokenBaseUrl, string getTokenUrl, string clientId, string clientSecret, string apiBaseUrl)
   {
     ArgumentNullException.ThrowIfNull(services);
 
@@ -18,7 +18,7 @@ public static class HttpClientAuthorizationSampleServices
       configureClient: httpClient => httpClient.BaseAddress = new Uri(tokenBaseUrl)
     );
 
-    services.AddHttpClient
+    IHttpClientBuilder builder = services.AddHttpClient
     (
       name: "api",
       configureClient: httpClient =>
@@ -27,11 +27,12 @@ public static class HttpClientAuthorizationSampleServices
         httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
         httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
       }
-    )
-    .AddHttpMessageHandler((IServiceProvider provider) =>
+    );
+
+    builder.AddHttpMessageHandler((IServiceProvider provider) =>
     {
       HttpClient tokenHttpClient = provider.GetRequiredService<IHttpClientFactory>().CreateClient("token");
-      AuthorizedHttpMessageHandler authorizedHttpMessageHandler = new(tokenHttpClient);
+      AuthorizedHttpMessageHandler authorizedHttpMessageHandler = new(tokenHttpClient, getTokenUrl, clientId, clientSecret);
 
       return authorizedHttpMessageHandler;
     });
