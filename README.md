@@ -1,1 +1,1 @@
-# http-client-authorization-sample
+# Authorized HTTP Client Sample
