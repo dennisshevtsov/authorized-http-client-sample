@@ -9,9 +9,12 @@ namespace HttpClientAuthorizationSample;
 
 public static class HttpClientAuthorizationSampleServices
 {
-  public static IHttpClientBuilder AddAuthorizedHttpClient(this IServiceCollection services)
+  public static IHttpClientBuilder AddAuthorizedHttpClient(this IServiceCollection services, string sectionName = "")
   {
     ArgumentNullException.ThrowIfNull(services);
+
+    services.AddOptions<AuthorizedHttpClientSettings>(sectionName)
+            .ValidateOnStart();
 
     services.AddHttpClient
     (
@@ -60,22 +63,5 @@ public static class HttpClientAuthorizationSampleServices
     });
 
     return apiClientBuilder;
-  }
-
-  public static IHttpClientBuilder WithSettings(this IHttpClientBuilder builder, string sectionName)
-  {
-    ArgumentNullException.ThrowIfNull(builder);
-    builder.Services.AddOptions<AuthorizedHttpClientSettings>(sectionName)
-                    .ValidateOnStart();
-
-    return builder;
-  }
-
-  public static IHttpClientBuilder WithSettings(this IHttpClientBuilder builder, Action<AuthorizedHttpClientSettings> configure)
-  {
-    ArgumentNullException.ThrowIfNull(builder);
-    builder.Services.Configure<AuthorizedHttpClientSettings>(configure);
-
-    return builder;
   }
 }
