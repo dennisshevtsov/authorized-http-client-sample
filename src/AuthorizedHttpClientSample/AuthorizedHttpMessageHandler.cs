@@ -5,7 +5,7 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
-namespace HttpClientAuthorizationSample;
+namespace AuthorizedHttpClientSample;
 
 public sealed class AuthorizedHttpMessageHandler(HttpClient tokenHttpClient, string getTokenUrl, string clientId, string clientSecret) : DelegatingHandler
 {

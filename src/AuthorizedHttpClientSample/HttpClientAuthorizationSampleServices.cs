@@ -5,7 +5,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace HttpClientAuthorizationSample;
+namespace AuthorizedHttpClientSample;
 
 public static class HttpClientAuthorizationSampleServices
 {

@@ -4,7 +4,7 @@
 
 using System.Text.Json.Serialization;
 
-namespace HttpClientAuthorizationSample;
+namespace AuthorizedHttpClientSample;
 
 public sealed record class Token
 (
