@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
-using Microsoft.Extensions.DependencyInjection;
+using AuthorizedHttpClientSample;
 using Microsoft.Extensions.Options;
 
-namespace AuthorizedHttpClientSample;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class HttpClientAuthorizationSampleServices
 {
