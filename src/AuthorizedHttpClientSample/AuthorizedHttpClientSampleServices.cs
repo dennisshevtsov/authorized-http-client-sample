@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class AuthorizedHttpClientSampleServices
 {
-  public static IHttpClientBuilder AddAuthorizedHttpClient(this IServiceCollection services, string sectionName = "")
+  public static IHttpClientBuilder AddAuthorizedHttpClient(this IServiceCollection services, string tokenClientName = "token", string apiClientName = "api", string sectionName = "")
   {
     ArgumentNullException.ThrowIfNull(services);
 
@@ -18,7 +18,7 @@ public static class AuthorizedHttpClientSampleServices
 
     services.AddHttpClient
     (
-      name: "token",
+      name: tokenClientName,
       configureClient: (IServiceProvider provider, HttpClient tokenHttpClient) =>
       {
         AuthorizedHttpClientSettings authorizedHttpClientSettings =
@@ -31,7 +31,7 @@ public static class AuthorizedHttpClientSampleServices
 
     IHttpClientBuilder apiClientBuilder = services.AddHttpClient
     (
-      name: "api",
+      name: apiClientName,
       configureClient: (IServiceProvider provider, HttpClient tokenHttpClient) =>
       {
         AuthorizedHttpClientSettings authorizedHttpClientSettings =
