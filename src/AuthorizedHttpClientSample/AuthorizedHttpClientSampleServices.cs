@@ -2,23 +2,21 @@
 // Licensed under the MIT License.
 // See LICENSE in the project root for license information.
 
-using Microsoft.Extensions.DependencyInjection;
+using AuthorizedHttpClientSample;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace AuthorizedHttpClientSample;
+namespace Microsoft.Extensions.DependencyInjection;
 
-public static class HttpClientAuthorizationSampleServices
+public static class AuthorizedHttpClientSampleServices
 {
-  public static IHttpClientBuilder AddAuthorizedHttpClient(this IServiceCollection services, string sectionName = "")
+  public static IHttpClientBuilder AddAuthorizedHttpClient(this IServiceCollection services, string tokenClientName = "token", string apiClientName = "api")
   {
     ArgumentNullException.ThrowIfNull(services);
 
-    services.AddOptions<AuthorizedHttpClientSettings>(sectionName)
-            .ValidateOnStart();
-
     services.AddHttpClient
     (
-      name: "token",
+      name: tokenClientName,
       configureClient: (IServiceProvider provider, HttpClient tokenHttpClient) =>
       {
         AuthorizedHttpClientSettings authorizedHttpClientSettings =
@@ -31,7 +29,7 @@ public static class HttpClientAuthorizationSampleServices
 
     IHttpClientBuilder apiClientBuilder = services.AddHttpClient
     (
-      name: "api",
+      name: apiClientName,
       configureClient: (IServiceProvider provider, HttpClient tokenHttpClient) =>
       {
         AuthorizedHttpClientSettings authorizedHttpClientSettings =
@@ -40,7 +38,7 @@ public static class HttpClientAuthorizationSampleServices
 
         tokenHttpClient.BaseAddress = new Uri(authorizedHttpClientSettings.ApiBaseUrl);
         tokenHttpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-        tokenHttpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
+        //tokenHttpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
       }
     );
 
@@ -50,7 +48,7 @@ public static class HttpClientAuthorizationSampleServices
           provider.GetRequiredService<IOptions<AuthorizedHttpClientSettings>>().Value ??
           throw new Exception("No authorizated HTTP client settings retrieved");
 
-      HttpClient tokenHttpClient = provider.GetRequiredService<IHttpClientFactory>().CreateClient("token");
+      HttpClient tokenHttpClient = provider.GetRequiredService<IHttpClientFactory>().CreateClient(tokenClientName);
       AuthorizedHttpMessageHandler authorizedHttpMessageHandler = new
       (
         tokenHttpClient,
@@ -63,5 +61,16 @@ public static class HttpClientAuthorizationSampleServices
     });
 
     return apiClientBuilder;
+  }
+
+  public static IHttpClientBuilder WithSettings(this IHttpClientBuilder builder, IConfiguration configuration)
+  {
+    ArgumentNullException.ThrowIfNull(builder);
+
+    builder.Services.AddOptions<AuthorizedHttpClientSettings>()
+                    .Bind(configuration)
+                    .ValidateOnStart();
+
+    return builder;
   }
 }
