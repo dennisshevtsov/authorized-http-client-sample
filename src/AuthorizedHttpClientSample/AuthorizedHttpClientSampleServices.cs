@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class HttpClientAuthorizationSampleServices
+public static class AuthorizedHttpClientSampleServices
 {
   public static IHttpClientBuilder AddAuthorizedHttpClient(this IServiceCollection services, string sectionName = "")
   {
