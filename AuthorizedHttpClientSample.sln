@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizedHttpClientSample.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizedHttpClientSample.Client", "sample\AuthorizedHttpClientSample.Client\AuthorizedHttpClientSample.Client.csproj", "{8399892C-A47A-4611-A857-0C2F8B52CD10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizedHttpClientSample.Server", "sample\AuthorizedHttpClientSample.Server\AuthorizedHttpClientSample.Server.csproj", "{284ACACE-BC41-4A4E-B23B-AA556C0BAE1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8399892C-A47A-4611-A857-0C2F8B52CD10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8399892C-A47A-4611-A857-0C2F8B52CD10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8399892C-A47A-4611-A857-0C2F8B52CD10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{284ACACE-BC41-4A4E-B23B-AA556C0BAE1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{284ACACE-BC41-4A4E-B23B-AA556C0BAE1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{284ACACE-BC41-4A4E-B23B-AA556C0BAE1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{284ACACE-BC41-4A4E-B23B-AA556C0BAE1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
