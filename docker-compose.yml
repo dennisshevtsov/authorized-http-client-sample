@@ -6,7 +6,7 @@ services:
     image: authorized-httpclient-sample-api
     build:
       context: .
-      dockerfile: AuthorizedHttpClientSample.Api/Dockerfile
+      dockerfile: ./sample/AuthorizedHttpClientSample.Api/Dockerfile
     environment:
       - ASPNETCORE_HTTP_PORTS=5001
     ports:

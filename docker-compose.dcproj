@@ -7,7 +7,7 @@
     <ProjectGuid>a3fd3937-ccf0-493c-8554-994c0965ad9a</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>authorized-httpclient-sample</DockerServiceName>
+    <DockerServiceName>authorized-httpclient-sample-api</DockerServiceName>
     <DockerComposeProjectName>authorized-httpclient-sample</DockerComposeProjectName>
   </PropertyGroup>
   <ItemGroup>
