@@ -1,0 +1,24 @@
+[
+  {
+    "httpRequest": {
+      "path": "/connect/introspect"
+    },
+    "httpResponse": {
+      "body": {
+          "active": true,
+          "sub": "test"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "path": "/connect/userinfo"
+    },
+    "httpResponse": {
+      "body": {
+        "sub": "test",
+        "name": "Test Test"
+      }
+    }
+  }
+]
