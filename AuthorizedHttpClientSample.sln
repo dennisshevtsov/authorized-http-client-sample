@@ -11,6 +11,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizedHttpClientSample.Api", "sample\AuthorizedHttpClientSample.Api\AuthorizedHttpClientSample.Api.csproj", "{F19833BA-FAD8-460D-BC2D-766ABFAC7B45}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizedHttpClientSample.Api.Test", "sample\AuthorizedHttpClientSample.Api.Test\AuthorizedHttpClientSample.Api.Test.csproj", "{0511A142-CE2B-4ADD-940D-2BB00008D607}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F19833BA-FAD8-460D-BC2D-766ABFAC7B45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F19833BA-FAD8-460D-BC2D-766ABFAC7B45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F19833BA-FAD8-460D-BC2D-766ABFAC7B45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0511A142-CE2B-4ADD-940D-2BB00008D607}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0511A142-CE2B-4ADD-940D-2BB00008D607}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0511A142-CE2B-4ADD-940D-2BB00008D607}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0511A142-CE2B-4ADD-940D-2BB00008D607}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
