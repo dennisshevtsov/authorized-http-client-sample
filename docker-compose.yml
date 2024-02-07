@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  authorized-httpclient-sample-api:
+    container_name: authorized-httpclient-sample-api
+    image: authorized-httpclient-sample-api
+    build:
+      context: .
+      dockerfile: AuthorizedHttpClientSample.Api/Dockerfile
+    environment:
+      - ASPNETCORE_HTTP_PORTS=5001
+    ports:
+      - "5001:5001"
+  authorized-httpclient-sample-oidc:
+    container_name: authorized-httpclient-sample-oidc
+    image: mockserver/mockserver:mockserver-5.15.0
+    ports:
+      - 5002:5002
+    environment:
+      - MOCKSERVER_PROPERTY_FILE=/config/mockserver.properties
+      - MOCKSERVER_INITIALIZATION_JSON_PATH=/config/mocked-requests.json
+    volumes:
+      - type: bind
+        source: ./oidc-server
+        target: /config

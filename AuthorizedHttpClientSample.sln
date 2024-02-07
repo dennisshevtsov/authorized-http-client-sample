@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizedHttpClientSample.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizedHttpClientSample.Api", "AuthorizedHttpClientSample.Api\AuthorizedHttpClientSample.Api.csproj", "{3DF6EB6D-6AFB-4473-BE55-DE0815AB2C5E}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A3FD3937-CCF0-493C-8554-994C0965AD9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3DF6EB6D-6AFB-4473-BE55-DE0815AB2C5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DF6EB6D-6AFB-4473-BE55-DE0815AB2C5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DF6EB6D-6AFB-4473-BE55-DE0815AB2C5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3FD3937-CCF0-493C-8554-994C0965AD9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3FD3937-CCF0-493C-8554-994C0965AD9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3FD3937-CCF0-493C-8554-994C0965AD9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3FD3937-CCF0-493C-8554-994C0965AD9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
